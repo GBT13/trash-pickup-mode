@@ -32,8 +32,14 @@ end)
 
 script.on_event(defines.events.on_player_main_inventory_changed, function(event)
     local player = game.get_player(event.player_index)
+    
     if not shortcutEnabled(player) then
         return end
+    
+    if not inventoryInitialized then
+        playerInventory = player.get_main_inventory().get_contents()
+        inventoryInitialized = true
+    end
 
     local trashInventory = player.get_inventory(defines.inventory.character_trash)
     local mainInventory = player.get_main_inventory()
@@ -54,22 +60,28 @@ script.on_event(defines.events.on_player_main_inventory_changed, function(event)
             trashInventory.insert({name=item, count=diff})
         end
     end
-
     playerInventory = inventoryContent
 end)
 
--- script.on_event(defines.events.on_player_created, function()
---     game.print("dadw")
---     playerinventories = {}
---     local players = game.players
+script.on_load(function()
+    inventoryInitialized = false
+end)
 
---     for index, player in pairs (players) do
---         playerinventories.insert(player.index, player.get_main_inventory().get_contents())
---     end
+script.on_event(defines.events.on_research_reversed, function(event)
+    if (event.research.name == "logistic-robotics") then
+        for id, player in pairs(game.players) do
+            player.set_shortcut_available("trash-pickup-toggle", false)
+        end
+    end
+end)
 
-
---     -- playerInventory = player.get_main_inventory().get_contents()
--- end)
+script.on_event(defines.events.on_research_finished, function(event)
+    if event.research.name == "logistic-robotics" then
+        for id, player in pairs(game.players) do
+            player.set_shortcut_available("trash-pickup-toggle", true)
+        end
+    end
+end)
 
 script.on_event(defines.events.on_lua_shortcut, function(event)
     if (event.prototype_name ~= "trash-pickup-toggle") then
@@ -80,4 +92,14 @@ script.on_event(defines.events.on_lua_shortcut, function(event)
 
     player.set_shortcut_toggled("trash-pickup-toggle", not shortcutEnabled(player))
     playerInventory = player.get_main_inventory().get_contents()
+end)
+
+script.on_event(defines.events.on_player_created, function(event)
+    local player = game.get_player(event.player_index)
+
+    if player.force.technologies["logistic-robotics"].researched then
+        player.set_shortcut_available("trash-pickup-toggle", true)
+    else
+        player.set_shortcut_available("trash-pickup-toggle", false)
+    end
 end)

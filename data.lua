@@ -16,8 +16,17 @@ data:extend({
         action = "lua",
         toggleable = true,
         localised_name = "Trash Pickup Toggle",
+        technology_to_unlock = "logistic-robotics",
         icon = {
             filename = "__trash-pickup-mode__/trash.png",
+            priority = "extra-high-no-scale",
+            size = 32,
+            scale = 0.5,
+            mipmap_count = 2,
+            flags = {"gui-icon"}
+        },
+        disabled_icon = {
+            filename = "__trash-pickup-mode__/trash-white.png",
             priority = "extra-high-no-scale",
             size = 32,
             scale = 0.5,
