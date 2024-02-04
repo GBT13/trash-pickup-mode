@@ -7,6 +7,9 @@ script.on_event(defines.events.on_player_mined_entity, function(event)
     if not shortcutEnabled(player) then
         return end
 
+    if not player.mod_settings["trash-pickup-mode-enable-mining"].value then
+        return end
+
     local trashInventory = player.get_inventory(defines.inventory.character_trash)
     local mainInventory = player.get_main_inventory()
 
@@ -22,6 +25,9 @@ script.on_event(defines.events.on_picked_up_item, function(event)
     if not shortcutEnabled(player) then
         return end
 
+    if not player.mod_settings["trash-pickup-mode-enable-pickup"].value then 
+        return end
+
     local trashInventory = player.get_inventory(defines.inventory.character_trash)
     local mainInventory = player.get_main_inventory()
 
@@ -34,6 +40,9 @@ script.on_event(defines.events.on_player_main_inventory_changed, function(event)
     local player = game.get_player(event.player_index)
     
     if not shortcutEnabled(player) then
+        return end
+
+    if not player.mod_settings["trash-pickup-mode-enable-other"].value then
         return end
     
     if not inventoryInitialized then
