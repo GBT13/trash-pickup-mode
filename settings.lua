@@ -25,5 +25,14 @@ data:extend({
         setting_type = "runtime-per-user",
         default_value = true,
         order = "setting-3"
+    },
+    {
+        type = "bool-setting",
+        name = "trash-pickup-mode-disable-logi-requests",
+        localised_name = "Automatically disable personal logistic requests",
+        localised_description = "Disable personal logistic requests when enabling the trash pickup mode. This prevents logistic bots possibly getting stuck in a loop delivering and then picking up the same item(s) if 'Trash everything' is enabled",
+        setting_type = "runtime-per-user",
+        default_value = false,
+        order = "setting-4"
     }
 })
