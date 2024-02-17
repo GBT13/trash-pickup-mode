@@ -1,4 +1,11 @@
 local shortcutEnabled = function(player)
+    if player.character == nil then
+        if (player.is_shortcut_toggled("trash-pickup-mode-toggle")) then
+            player.print("Can't use trash mode without a character, disabling trash mode", {r = 1.0} )
+            player.set_shortcut_toggled("trash-pickup-mode-toggle", false)
+            return false
+        end
+    end
     return player.is_shortcut_toggled("trash-pickup-mode-toggle")
 end
 
