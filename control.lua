@@ -38,7 +38,6 @@ script.on_event(defines.events.on_picked_up_item, function(event)
     local trashInventory = player.get_inventory(defines.inventory.character_trash)
     local mainInventory = player.get_main_inventory()
 
-
     mainInventory.remove(event.item_stack)
     trashInventory.insert(event.item_stack)
 end)

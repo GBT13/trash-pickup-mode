@@ -4,9 +4,8 @@ data:extend({
         name = "trash-pickup-mode-toggle-input",
         localised_name = "Toggle Trash Pickup Mode",
         key_sequence = "ALT + T"
-    }
+    },
 })
-
 
 data:extend({
     {
@@ -36,4 +35,3 @@ data:extend({
         }
     }
 })
-
