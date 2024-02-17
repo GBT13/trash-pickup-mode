@@ -44,11 +44,6 @@ script.on_event(defines.events.on_player_main_inventory_changed, function(event)
 
     if not player.mod_settings["trash-pickup-mode-enable-other"].value then
         return end
-    
-    if not inventoryInitialized then
-        playerInventory = player.get_main_inventory().get_contents()
-        inventoryInitialized = true
-    end
 
     local trashInventory = player.get_inventory(defines.inventory.character_trash)
     local mainInventory = player.get_main_inventory()
@@ -56,15 +51,15 @@ script.on_event(defines.events.on_player_main_inventory_changed, function(event)
     local diff = nil
 
     for item, amount in pairs (inventoryContent) do
-        if playerInventory[item] ~= nil then
-            diff = amount - playerInventory[item]
+        if global.playerInventories[event.player_index][item] ~= nil then
+            diff = amount - global.playerInventories[event.player_index][item]
         else
             diff = amount
         end
 
-        local foo = string.find(item, "construction%-robot")
+        local constructionBot = string.find(item, "construction%-robot")
 
-        if foo then
+        if constructionBot then
             goto continue
         end
 
@@ -76,8 +71,8 @@ script.on_event(defines.events.on_player_main_inventory_changed, function(event)
     end
 end)
 
-script.on_load(function()
-    inventoryInitialized = false
+script.on_init(function()
+    global.playerInventories = {}
 end)
 
 script.on_event(defines.events.on_research_reversed, function(event)
@@ -116,11 +111,17 @@ script.on_event({defines.events.on_lua_shortcut, "trash-pickup-mode-toggle-input
         player.character_personal_logistic_requests_enabled = false
     end
 
-    playerInventory = player.get_main_inventory().get_contents()
+    global.playerInventories[event.player_index] = player.get_main_inventory().get_contents()
 end)
 
 script.on_event(defines.events.on_player_created, function(event)
     local player = game.get_player(event.player_index)
+
+    if not global.playerInventories then
+        global.playerInventories = {}
+    end
+
+    global.playerInventories[event.player_index] = {}
 
     if player.force.technologies["logistic-robotics"].researched then
         player.set_shortcut_available("trash-pickup-mode-toggle", true)
