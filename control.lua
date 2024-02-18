@@ -10,6 +10,11 @@ local shortcutEnabled = function(player)
             return false
         end
     end
+
+    if (not player.is_shortcut_available("trash-pickup-mode-toggle")) then
+        return false 
+    end
+
     return player.is_shortcut_toggled("trash-pickup-mode-toggle")
 end
 
@@ -104,7 +109,7 @@ script.on_event({defines.events.on_lua_shortcut, "trash-pickup-mode-toggle-input
 
     local player = game.get_player(event.player_index)
 
-    if (event.name == "trash-pickup-mode-toggle-input" and not player.is_shortcut_available("trash-pickup-mode-toggle")) then
+    if (event.input_name == "trash-pickup-mode-toggle-input" and not player.is_shortcut_available("trash-pickup-mode-toggle")) then
         return end
 
     if player.character == nil then
@@ -121,7 +126,7 @@ script.on_event({defines.events.on_lua_shortcut, "trash-pickup-mode-toggle-input
 end)
 
 script.on_event(defines.events.on_player_created, function(event)
-    local player = game.get_player(player.index)
+    local player = game.get_player(event.player_index)
 
     if player.force.technologies["logistic-robotics"].researched then
         player.set_shortcut_available("trash-pickup-mode-toggle", true)
