@@ -1,3 +1,7 @@
+script.on_init(function()
+    global.playerInventories = {}
+end)
+
 local shortcutEnabled = function(player)
     if player.character == nil then
         if (player.is_shortcut_toggled("trash-pickup-mode-toggle")) then
@@ -77,10 +81,6 @@ script.on_event(defines.events.on_player_main_inventory_changed, function(event)
     end
 end)
 
-script.on_init(function()
-    global.playerInventories = {}
-end)
-
 script.on_event(defines.events.on_research_reversed, function(event)
     if (event.research.name == "logistic-robotics") then
         for id, player in pairs(game.players) do
@@ -122,12 +122,6 @@ end)
 
 script.on_event(defines.events.on_player_created, function(event)
     local player = game.get_player(event.player_index)
-
-    if not global.playerInventories then
-        global.playerInventories = {}
-    end
-
-    global.playerInventories[event.player_index] = {}
 
     if player.force.technologies["logistic-robotics"].researched then
         player.set_shortcut_available("trash-pickup-mode-toggle", true)
