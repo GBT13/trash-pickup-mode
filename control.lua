@@ -61,8 +61,8 @@ script.on_event(defines.events.on_player_main_inventory_changed, function(event)
     local diff = nil
 
     for item, amount in pairs (inventoryContent) do
-        if global.playerInventories[event.player_index][item] ~= nil then
-            diff = amount - global.playerInventories[event.player_index][item]
+        if global.playerInventories[player.index][item] ~= nil then
+            diff = amount - global.playerInventories[player.index][item]
         else
             diff = amount
         end
@@ -102,10 +102,10 @@ script.on_event({defines.events.on_lua_shortcut, "trash-pickup-mode-toggle-input
         return 
     end
 
+    local player = game.get_player(event.player_index)
+
     if (event.name == "trash-pickup-mode-toggle-input" and not player.is_shortcut_available("trash-pickup-mode-toggle")) then
         return end
-    
-    local player = game.get_player(event.player_index)
 
     if player.character == nil then
         player.print("Can't toggle trash mode without a character", {r = 1.0} )
@@ -117,11 +117,11 @@ script.on_event({defines.events.on_lua_shortcut, "trash-pickup-mode-toggle-input
         player.character_personal_logistic_requests_enabled = false
     end
 
-    global.playerInventories[event.player_index] = player.get_main_inventory().get_contents()
+    global.playerInventories[player.index] = player.get_main_inventory().get_contents()
 end)
 
 script.on_event(defines.events.on_player_created, function(event)
-    local player = game.get_player(event.player_index)
+    local player = game.get_player(player.index)
 
     if player.force.technologies["logistic-robotics"].researched then
         player.set_shortcut_available("trash-pickup-mode-toggle", true)
