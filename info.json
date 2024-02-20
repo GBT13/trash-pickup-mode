@@ -1,6 +1,6 @@
 {
     "name": "trash-pickup-mode",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Trash Pickup Mode",
     "description": "Add a configurable toggle to the shortcut menu that allows you to send all picked up items straight to logistic trash slots",
     "author": "GBT13",
